@@ -1,0 +1,10 @@
+{
+  "shared_paths": ["package.json", "**/package.json", "pnpm-lock.yaml",
+                   "pnpm-workspace.yaml", "pyproject.toml", "**/pyproject.toml", "uv.lock"],
+  "lockfiles": ["pnpm-lock.yaml", "uv.lock"],
+  "protected_paths": ["contracts/**", ".env.example", "scripts/**", ".github/**",
+                      ".claude/**", "harness/**", "CLAUDE.md", "dryrun/contract/**"],
+  "required_tools": ["git", "gh", "python3", "node", "pnpm", "uv"],
+  "trusted_bots": ["github-actions[bot]"],
+  "stale_minutes": 60
+}

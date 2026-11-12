@@ -1,0 +1,9 @@
+{
+  "members": {
+    "p1": { "login": "github-login-1", "role": "architect" },
+    "p2": { "login": "github-login-2", "role": "builder" },
+    "p3": { "login": "github-login-3", "role": "builder" },
+    "p4": { "login": "github-login-4", "role": "builder" }
+  },
+  "contract_owners": ["p1", "p3"]
+}

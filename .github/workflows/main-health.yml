@@ -1,0 +1,41 @@
+name: main-health
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: ${{ hashFiles('pnpm-lock.yaml') != '' && 'pnpm' || '' }}
+      - uses: astral-sh/setup-uv@v5
+        if: hashFiles('pyproject.toml') != ''
+        with:
+          enable-cache: true
+      - name: Check main
+        id: check
+        continue-on-error: true
+        run: |
+          ./scripts/check.sh setup
+          ./scripts/check.sh
+      - name: Open revert issue on failure
+        if: steps.check.outcome == 'failure'
+        run: python3 scripts/harness.py main-health --sha "${{ github.sha }}"
+      - name: Fail the run
+        if: steps.check.outcome == 'failure'
+        run: exit 1

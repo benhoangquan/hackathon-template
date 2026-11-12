@@ -1,0 +1,16 @@
+name: unblock-issues
+on:
+  issues:
+    types: [closed]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  unblock:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/harness.py unblock
